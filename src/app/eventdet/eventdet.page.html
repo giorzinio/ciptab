@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <img class="ion-padding" src="assets/img/cip_cda.png" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ion-no-padding ion-no-margin">
+    <img [src]="'data:image/jpg;base64,' + event.imgEvento">
+  </ion-card>
+  <div class="title ion-padding">
+    <strong>{{event.Titutlo}}</strong>
+  </div>
+  <div class="author-details ion-padding">
+    <p>{{event.vnomcap}}</p>
+    <ion-text color="medium">Publicado {{event.FechaPublicacion | date:'mediumDate'}}</ion-text>    
+    <div class="hr"></div>
+  </div>
+  <p class="description ion-padding-start ion-padding-end ion-text-justify">
+    {{event.Descripcion}}
+  </p>
+</ion-content>
+
+<ion-toolbar color="success" (click)="masinfo('test')">
+  <ion-buttons slot="end">
+    <ion-button>
+      <ion-icon name="logo-whatsapp" style="font-size: 35px;"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-title>Mas información...</ion-title>
+</ion-toolbar>

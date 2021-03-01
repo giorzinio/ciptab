@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-progress-bar type="indeterminate" *ngIf="api.loading"></ion-progress-bar>
+<ion-content class="ion-padding">  
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-start">
+        <h1 class="title"><strong>Ingresa a CIP con tu codigo de colegiado</strong></h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-list>
+					<ion-item>
+					  <ion-label color="primary" position="floating">CÓDIGO CIP</ion-label>
+					  <ion-input [(ngModel)] = "codigo" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"  inputmode="number" placeholder="Ingrese su CIP"></ion-input>
+					  <ion-icon  src="assets/img/binary-code.svg" color="dark" slot="end"></ion-icon>
+					</ion-item>
+				</ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-start">
+        <ion-text *ngIf="!isShown" color="medium">Primero verificaremos tu codigo CIP</ion-text>
+        <ion-text *ngIf="isShown && user?.vcorcol" color="medium"><ion-icon color="success" name="checkmark-done-outline"></ion-icon> {{message}}</ion-text>
+        <ion-text *ngIf="isShown && user && !user?.vcorcol" color="medium"><ion-icon color="warning" name="alert-circle"></ion-icon> {{message}}</ion-text>
+        <ion-text *ngIf="isShown && !user" color="medium"><ion-icon color="danger" name="checkmark-done-outline"></ion-icon> {{message}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-button expand="full" (click)="validarCip()" color="primary" [disabled]="disButton">Verificar CIP</ion-button>
+        <hr>
+        <ion-button expand="full" color="light" (click)="sendCode()" *ngIf="isShown && user?.vcorcol">
+          <ion-icon  slot="start" name="mail" ></ion-icon>
+          RECIBIR CÓDIGO POR CORREO
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

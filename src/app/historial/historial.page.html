@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar >
+    <img class="ion-padding" src="assets/img/cip_cda.png" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid style="background-color: #9c0c0c;">
+    <ion-row>
+      <ion-col class="ion-text-end">
+        <ion-text color="light"><h1><ion-icon size="large" name="document-text"></ion-icon> Mis Pagos</h1></ion-text>
+        <hr class="solid">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="cuotas">
+    <ion-row *ngFor="let c of cuotas">
+      <ion-col class="ion-text-start" size="12">
+        <strong>{{c.vnomdoc  | uppercase}} {{c.vdocpag}}</strong>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        Cuota {{c.dfeccuo | date:'mediumDate'}}
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        Fecha Pago {{c.dfecpag | date:'mediumDate'}}
+        <br>
+        <br>
+      </ion-col>
+    </ion-row> 
+  </ion-grid>
+  <ion-grid *ngIf="!cuotas">
+    <ion-row >
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        <br>
+        <br>
+      </ion-col>
+    </ion-row> 
+    <ion-row >
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        <br>
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        <br>
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        <br>
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        <br>
+        <br>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-col>
+      <ion-col class="ion-text-start" size="12">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        <br>
+        <br>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

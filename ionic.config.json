@@ -1,0 +1,7 @@
+{
+  "name": "ciptab",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

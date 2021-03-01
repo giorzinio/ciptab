@@ -1,0 +1,54 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="background-color: #9c0c0c;">
+    <ion-row>
+      <ion-col class="ion-text-start" size="6">
+        <ion-text color="light"><p><strong>Datos CIP</strong></p></ion-text>
+      </ion-col>
+      <ion-col class="ion-text-end" size="6">
+        <img class="logo" style="max-width: 60%;" src="assets/img/avatar.png"/>
+      </ion-col>
+    </ion-row>    
+  </ion-grid>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating" color="dark">Capítulo</ion-label>
+          <ion-input value="Sistemas e Informática" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Fecha de Colegiatura</ion-label>
+          <ion-input value="2018-01-15" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Situación</ion-label>
+          <ion-input value="Activo colegiado" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Estado</ion-label>
+          <ion-input value="NO HABILITADO" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>    
+  </ion-grid>
+</ion-content>

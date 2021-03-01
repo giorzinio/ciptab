@@ -1,0 +1,95 @@
+<ion-header class="ion-padding">
+  <ion-toolbar>    
+    <img src="assets/img/cip_cda.png" />
+    <ion-item class="ion-no-padding" lines="none" button="true">
+      <ion-button size="small" slot="end" shape="round" fill="clear" (click)="filtro()">
+        <ion-icon slot="start" src="assets/icon/levels.svg"></ion-icon>
+        Filtro
+      </ion-button>       
+    </ion-item>      
+    <!-- <ion-slides class="ion-padding-top swiper-container hydrated swiper-container-initialized swiper-container-horizontal swiper-container-ios" mode="md">
+      <ion-slide (click)="quitarfiltro()" class="ion-sile-custom">
+        <ion-chip color="danger">
+          <ion-label>
+            TODOS
+          </ion-label>
+        </ion-chip>
+      </ion-slide>
+      <ion-slide (click)="filterEvent(cap)" class="ion-sile-custom" *ngFor="let cap of capitulos">
+        <ion-chip color="danger">
+          <ion-label>
+            {{cap.vnomcap}}
+          </ion-label>
+        </ion-chip>
+      </ion-slide>      
+    </ion-slides> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>  
+   <div *ngIf="listevent">
+    <ion-slides  #slides (ionSlideWillChange) ="slideNumber()" pager="true" [options]="slideOpts">
+      <ion-slide *ngFor="let gen of generales" (click)="detalle(gen)">
+        <ion-card id="oneColumn" class="md hydrated" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(data:image/jpg;base64,'+ gen.imgEvento + ')'}">         
+          <ion-grid class="ion-no-padding">
+            <ion-row>
+              <ion-col size="8">
+                <div class="section1">
+                  <ion-button color="danger" size="small" fill="solid">Eventos Principales</ion-button>
+                </div>
+              </ion-col>
+              <ion-col size="4" class="ion-text-end">
+                <ion-chip class="page-colum">
+                  <ion-label color="light">{{currentIndex}}/{{generales.length}}</ion-label>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+          <div class="section2">
+            <h2>
+              <strong>{{gen.Titutlo}}</strong>
+            </h2>
+            <p>
+              <ion-icon color="danger" name="time-outline"></ion-icon>
+              {{gen.FechaPublicacion | date:'mediumDate'}}
+            </p>
+          </div>
+        </ion-card>
+      </ion-slide>    
+    </ion-slides>
+    <ion-card (click)="detalle(event)" id="oneColumn" class="md hydrated" *ngFor="let event of listevent" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(data:image/jpg;base64,'+ event.imgEvento + ')'}">
+      <div class="section1">
+        <ion-button color="danger" size="small" fill="solid">{{event.vnomcap}}</ion-button>
+      </div>
+      <div class="section2">
+        <h2>
+          <strong>{{event.Titutlo}}</strong>
+        </h2>
+        <p>
+          <ion-icon color="danger" name="time-outline"></ion-icon>
+          {{event.FechaPublicacion | date:'mediumDate'}}
+        </p>
+      </div>
+    </ion-card>
+   </div>
+  
+  <div *ngIf="!listevent">
+    <ion-card (click)="detalle(event)" id="oneColumn" class="md hydrated" *ngFor="let event of listevent">
+      <div class="section1" style="width: 100%;">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </div>
+      <div class="section2" style="width: 100%;">
+        <h2>
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        </h2>
+        <p>
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        </p>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>

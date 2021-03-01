@@ -1,0 +1,264 @@
+<ion-header class="ion-padding">
+  <ion-toolbar>    
+    <img src="assets/img/cip_cda.png" />
+  </ion-toolbar>
+</ion-header>
+<ion-content>  
+  <ion-progress-bar type="indeterminate" *ngIf="api.loading"></ion-progress-bar>
+  <mat-vertical-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">  
+      <ng-template matStepLabel>SELECCIONE SU SERVICIO</ng-template>
+      <ion-grid>       
+        <ion-row>
+          <ion-col>
+            <form [formGroup]="firstFormGroup">
+            <ion-item lines="none">
+              <ion-select placeholder="Elige una opción" [(ngModel)]="servicio" (ionChange)="endServ(Section2)" formControlName="firstCtrl" required>
+                <ion-select-option value="c">Pago de Cuotas</ion-select-option>
+                <ion-select-option value="h">Certificado de Habilidad</ion-select-option>
+              </ion-select>
+            </ion-item> 
+            </form>     
+          </ion-col>      
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="goForward(stepper)" [disabled]="!servicio" shape="round" expand="full" size="small">Siguiente</ion-button>
+          </ion-col>          
+        </ion-row>
+      </ion-grid>      
+    </mat-step>
+    <mat-step>      
+      <ng-template matStepLabel>COMPLETE LOS DATOS</ng-template>
+      <ion-grid class="ion-no-padding">
+        <ion-row *ngIf="servicio=='c'">
+          <ion-col>
+            <ion-label>Desde</ion-label>
+            <ion-datetime displayFormat="YYYY MM"  [(ngModel)]="FecIni"  disabled="true"></ion-datetime>
+          </ion-col>      
+        </ion-row>
+        <ion-row *ngIf="servicio=='c'">
+          <ion-col>
+            <ion-label>Hasta</ion-label>
+            <ion-datetime displayFormat="YYYY MM" cancelText="Cancelar" doneText="Hecho"[(ngModel)]="FecFin" [min]="min" max="2099-12" (ionChange)="endDatos()"></ion-datetime>
+          </ion-col>      
+        </ion-row>
+        <ion-row *ngIf="servicio=='h'">
+          <ion-col size="6">
+            <ion-label>Fec. Incorporación</ion-label>
+            <ion-datetime displayFormat="DD MM YYYY"    value="2016-12-05T13:47:20.789" disabled="true"></ion-datetime>
+          </ion-col>      
+          <ion-col size="6" class="ion-text-end">
+            <ion-label>Fec. Vencimiento</ion-label>
+            <ion-datetime displayFormat="DD MM YYYY"  value="2021-04-09T13:47:20.789" disabled="true"></ion-datetime>
+          </ion-col>  
+        </ion-row>    
+        <ion-row *ngIf="servicio=='h'">
+          <ion-col>
+            <ion-label>Asunto</ion-label>
+            <ion-textarea  [(ngModel)]="Asunto"  placeholder="Ingresa el asunto aqui..."></ion-textarea>
+             
+          </ion-col>      
+        </ion-row>
+        <ion-row *ngIf="servicio=='h'">
+          <ion-col>
+            <ion-label>Entidad</ion-label>
+            <ion-textarea  [(ngModel)]="Entidad"  placeholder="Ingresa la entidad aqui..."></ion-textarea>
+          </ion-col>      
+        </ion-row>
+        <ion-row *ngIf="servicio=='h'">
+          <ion-col>
+            <ion-label>Dirección</ion-label>
+            <ion-textarea  [(ngModel)]="Direccion" placeholder="Ingresa la dirección aqui..."></ion-textarea>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="servicio=='h'">
+          <ion-col>
+            <ion-label>Correo</ion-label>
+            <ion-input  [(ngModel)]="Correo" placeholder="Ingresa el correo aqui..."></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="goForward(stepper)" shape="round" expand="full" size="small">Siguiente</ion-button>
+          </ion-col>          
+        </ion-row>
+      </ion-grid>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>COMPROBANTE DE PAGO </ng-template>  
+      <ion-segment [(ngModel)]="comprobante" (ionChange)="tipocomp()">
+        <ion-segment-button value="f">
+          <ion-label>Factura</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="b">
+          <ion-label>Boleta</ion-label>
+        </ion-segment-button>
+      </ion-segment>  
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label>{{comprobante == 'b' ?  'DNI': 'Nro Ruc'}}</ion-label>
+            <ion-textarea (ionChange)="getRuc()" placeholder="{{comprobante == 'b' ?  'Ingresa el DNI aqui...': 'Ingresa el Nro Ruc aqui...'}}" [(ngModel)]="document" [disabled]="comprobante == 'b'"></ion-textarea>
+          </ion-col>      
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label>Razón Social / Nombre</ion-label>
+            <ion-textarea disabled="true" placeholder="" [(ngModel)]="nombre" [disabled]="true"></ion-textarea>
+          </ion-col>      
+        </ion-row>        
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="next()" shape="round" expand="full" size="small" [disabled]="!nombre">PAGAR</ion-button>
+          </ion-col>          
+        </ion-row>
+      </ion-grid>  
+    </mat-step>
+  </mat-vertical-stepper>
+  <!-- <ion-grid (click)="editarTab('serv')" [ngClass]="tipo.serv === 'edit' ? '' : 'red-header'" #Section1>
+    <ion-row>
+      <ion-col>
+        <ion-label><strong>SELECCIONE SU SERVICIO (1 DE 3)</strong></ion-label>
+        <br>
+        <br> 
+      </ion-col>      
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none" [ngClass]="tipo.serv === 'edit' ? '' : 'red-ion-iten'" [disabled]="tipo.serv=='complete'">
+          <ion-label>Servicio</ion-label>
+          <ion-select placeholder="Opciones" [(ngModel)]="servicio" (ionChange)="endServ(Section2)">
+            <ion-select-option value="c">Pago de Cuotas</ion-select-option>
+            <ion-select-option value="h">Certificado de Habilidad</ion-select-option>
+          </ion-select>
+        </ion-item>      
+      </ion-col>      
+    </ion-row>
+  </ion-grid>
+  <ion-grid #Section2 (click)="editarTab('datos')" [ngClass]="{'disabled': tipo.datos === 'disabled', '': tipo.datos === 'edit', 'red-header-sec': tipo.datos === 'complete'}">
+    <ion-row>
+      <ion-col>
+        <ion-label><strong>COMPLETE LOS DATOS (2 DE 3)</strong></ion-label>
+        <br>
+        <br> 
+      </ion-col>      
+    </ion-row>
+    <ion-row *ngIf="servicio=='c'">
+      <ion-col>
+        <ion-label>Desde</ion-label>
+        <ion-datetime displayFormat="DD MM YYYY" [(ngModel)]="FecIni"  disabled="true"></ion-datetime>
+      </ion-col>      
+    </ion-row>
+    <ion-row *ngIf="servicio=='c'">
+      <ion-col>
+        <ion-label>Hasta</ion-label>
+        <ion-datetime displayFormat="DD MM YYYY" [(ngModel)]="FecFin" (ionChange)="endDatos()" [disabled]="tipo.datos=='complete'" max="2080"></ion-datetime>
+      </ion-col>      
+    </ion-row>
+    <ion-row *ngIf="servicio=='h'">
+      <ion-col size="6">
+        <ion-label>Fec. Incorporación</ion-label>
+        <ion-datetime displayFormat="DD MM YYYY"    value="2016-12-05T13:47:20.789" disabled="true"></ion-datetime>
+      </ion-col>      
+      <ion-col size="6" class="ion-text-end">
+        <ion-label>Fec. Vencimiento</ion-label>
+        <ion-datetime displayFormat="DD MM YYYY"  value="2021-04-09T13:47:20.789" disabled="true"></ion-datetime>
+      </ion-col>  
+    </ion-row>    
+    <ion-row *ngIf="servicio=='h'">
+      <ion-col>
+        <ion-label>Asunto</ion-label>
+        <ion-textarea placeholder="Ingresa el asunto aqui..."></ion-textarea>
+      </ion-col>      
+    </ion-row>
+    <ion-row *ngIf="servicio=='h'">
+      <ion-col>
+        <ion-label>Entidad</ion-label>
+        <ion-textarea placeholder="Ingresa la entidad aqui..."></ion-textarea>
+      </ion-col>      
+    </ion-row>
+    <ion-row *ngIf="servicio=='h'">
+      <ion-col>
+        <ion-label>Dirección</ion-label>
+        <ion-textarea placeholder="Ingresa la dirección aqui..."></ion-textarea>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid #Section3 [ngClass]="{'disabled': tipo.pagar === 'disabled', '': tipo.pagar === 'edit'}">
+    <ion-row>
+      <ion-col>
+        <ion-label><strong>IMPORTE A PAGAR (3 DE 3)</strong></ion-label>
+        <br>
+        <br> 
+      </ion-col>      
+    </ion-row>    
+    <ion-row *ngIf="servicio=='c'">
+      <ion-col size="6">
+        <ion-label>Nro Cuotas</ion-label>
+      </ion-col> 
+      <ion-col size="6" class="ion-text-end">
+        <ion-label><strong>{{diffmon}}</strong></ion-label>
+      </ion-col>     
+    </ion-row>
+    <ion-row *ngIf="servicio=='c'">
+      <ion-col size="6">
+        <ion-label>Importe</ion-label>
+      </ion-col> 
+      <ion-col size="6" class="ion-text-end">
+        <ion-label *ngIf="diffmon"><strong>S/ {{diffmon * 20}}</strong></ion-label>
+      </ion-col>     
+    </ion-row>
+    <ion-row *ngIf="servicio=='h'">
+      <ion-col size="6">
+        <ion-label>Importe</ion-label>
+      </ion-col> 
+      <ion-col size="6" class="ion-text-end">
+        <ion-label><strong>S/ 90.00</strong></ion-label>
+      </ion-col>     
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" (click)="next()">continuar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>  -->
+</ion-content>
+<ion-footer *ngIf="servicio">
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row *ngIf="servicio=='c'">
+        <ion-col>
+          <ion-text color="medium">N° Cuotas</ion-text>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-text color="medium">{{fechas.length}}</ion-text>                 
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text color="medium">Importe</ion-text>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-text color="medium">{{importe.toFixed(2)}}</ion-text>                 
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text color="medium">Comisión bancaria</ion-text>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-text color="medium">S/ {{(Cbancaria).toFixed(2)}}</ion-text>                  
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <strong>Total</strong>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <strong>S/ {{totalH.toFixed(2)}}</strong>              
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,47 @@
+<ion-header class="ion-padding">
+  <ion-toolbar>    
+    <img src="assets/img/cip_cda.png" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="background-color: #9c0c0c;">
+    <ion-row style="font-weight: bold;">
+      <ion-col class="ion-text-start ion-text-uppercase" size="10">
+        <ion-text color="light">Número de Cuotas</ion-text>
+      </ion-col>
+      <ion-col class="ion-text-end">
+        <ion-text color="light">{{checkCuotas()}}{{totalcuotas}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-start"   size="6">
+        <ion-text color="light">Importe a Pagar</ion-text>
+      </ion-col>
+      <ion-col class="ion-text-end">
+        <ion-text color="light">S/. {{importe}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+       
+      </ion-col>
+      <ion-col class="ion-text-end">
+        <!-- <ion-text color="tertiary" (click)="checkMaster()">Seleccionar todo</ion-text> -->
+        <ion-button color="success" (click)="next()">siguiente</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-card *ngFor="let entry of form">
+    <ion-item>
+      <ion-checkbox slot="start" [(ngModel)]="entry.isChecked"></ion-checkbox>
+      <ion-label class="ion-text-wrap">
+        <ion-text>
+          <h2>Fecha de vencimiento</h2>
+        </ion-text>
+        <p>{{entry.fv}}</p>
+      </ion-label>
+      <ion-button fill="outline" color="success" slot="end">S/ {{entry.deuda}}</ion-button>
+    </ion-item>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,9 @@
+@font-face {
+font-family: 'Verona Regular';
+src: url('Verona_cyr.eot');
+src: url('Verona_cyr.eot?#iefix') format('embedded-opentype'),
+url('Verona_cyr.woff') format('woff'),
+url('Verona_cyr.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+}

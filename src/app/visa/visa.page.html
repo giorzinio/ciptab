@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <img class="ion-padding" src="assets/img/cip_cda.png" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="card-img">
+    <div class="number">
+      <h1 class="number-text">{{tarjeta.Numero.toString().substring(0, 4) + "-" + tarjeta.Numero.toString().substring(4, 8) + "-" + tarjeta.Numero.toString().substring(8, 12) + "-" + tarjeta.Numero.toString().substring(12, tarjeta.Numero.toString().length)}}</h1>
+    </div>
+    <div class="fv">
+      <h1 class="fv-text">Fecha Vencimiento {{getDate()}}</h1>
+    </div>
+    <div class="nombre">
+      <h1 class="nombre-text">{{tarjeta.Nombre}}</h1>
+    </div>
+  </div> 
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">Número de Tarjeta</ion-label>
+          <ion-input [(ngModel)] = "tarjeta.Numero" type="number" max="16"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">Nombre de Tarjeta</ion-label>
+          <ion-input [(ngModel)] = "tarjeta.Nombre" ></ion-input>          
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size=4>
+        <ion-item>
+          <ion-label position="stacked">Mes expiración</ion-label>
+          <ion-input [(ngModel)] = "tarjeta.mexp" max="2"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size=4>
+        <ion-item>
+          <ion-label position="stacked">Año expiración</ion-label>
+          <ion-input [(ngModel)] = "tarjeta.aexp" max="4"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size=4>
+        <ion-item>
+          <ion-label position="stacked">CCV</ion-label>
+          <ion-input [(ngModel)] = "tarjeta.ccv" type="number" max="3"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" (click)="presentAlert()">
+    PAGAR
+  </ion-button>
+</ion-footer>
