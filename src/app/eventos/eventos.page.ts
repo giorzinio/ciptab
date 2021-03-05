@@ -4,6 +4,8 @@ import { ApiService } from '../providers/api/api.service';
 import { AuthService } from '../providers/auth/auth.service';
 import { Router } from '@angular/router';
 import { NavigationExtras } from '@angular/router';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 @Component({
   selector: 'app-eventos',
@@ -21,7 +23,8 @@ export class EventosPage implements OnInit {
   listevnetbp: any
   generales : any;
   capitulos : any;
-  constructor(public navCtrl:NavController, private router: Router, public api: ApiService, public auth: AuthService, public actionSheetController: ActionSheetController) { 
+  constructor(public navCtrl:NavController, private router: Router, public api: ApiService, public auth: AuthService, 
+    public actionSheetController: ActionSheetController, private callNumber: CallNumber, private emailComposer: EmailComposer) { 
     this.api.getDataWithParms('/api/Values',{ Opcion: 8,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
       if(data) {
@@ -43,12 +46,61 @@ export class EventosPage implements OnInit {
       } 
     });
   }
-
   async filtro() {
     const filtro = await this.actionSheetController.create({
       header: 'Capitulos',
       cssClass: 'action-sheets-basic-page',
       buttons: this.createButtons()
+    });
+    await filtro.present();
+  }
+  async contacto() {
+    const filtro = await this.actionSheetController.create({
+      header: 'CONTACTO',
+      cssClass: 'action-sheets-basic-page',
+      buttons: [
+        {
+        text: 'LLAMANOS AL (054) 241454',
+        icon: "call",
+        handler: () => {         
+          this.callNumber.callNumber("054241454", true)
+          .then(res => console.log('Launched dialer!', res))
+          .catch(err => console.log('Error launching dialer', err));
+          return true;
+          }
+        },
+        {
+        text: 'WHATSAPP AL +51 956 261 147',
+        icon: "logo-whatsapp",
+        handler: () => {          
+          window.open("https://wa.me/51956261147?text=Buenos%20dias","_self")
+          return true;
+          }        
+        },
+        {
+        text: 'E-MAIL AL informes.ciparequipa@cip.org.pe',
+        icon: "assets/icon/send-message.svg",
+        handler: () => {         
+          let email = {
+            to: 'informes.ciparequipa@cip.org.pe',            
+            subject: 'INFORMES',
+            isHtml: true
+          }
+          
+          // Send a text message using default options
+          this.emailComposer.open(email);
+          return true;
+          }
+        },
+        {
+          text: 'CERRAR',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }    
+        }
+      ]
     });
     await filtro.present();
   }

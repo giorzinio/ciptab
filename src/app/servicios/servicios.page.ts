@@ -5,6 +5,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ApiService } from '../providers/api/api.service';
 import { AuthService } from '../providers/auth/auth.service';
 import { formatDate } from "@angular/common";
+import { AlertController } from '@ionic/angular';
+import { File } from '@ionic-native/file/ngx';
+import { Plugins, FilesystemDirectory } from '@capacitor/core';
 
 @Component({
   selector: 'app-servicios',
@@ -38,17 +41,25 @@ export class ServiciosPage implements OnInit {
   dataServicio: any;
   Cbancaria: any=0;
   certificado: any =0;
-  Asunto: any =0;
-  Entidad: any =0;
-  Direccion: any =0;
-  Correo: any =0;
-  constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService, private _formBuilder: FormBuilder) {      
+  Asunto: any;
+  Entidad: any;
+  Direccion: any;
+  Correo: any;
+  financ: any;
+  financiar: any;
+  
+  constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService, private _formBuilder: FormBuilder, public alertController: AlertController, private file: File) {      
     //this.endDatos();    
     this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
-     this.dataServicio = JSON.parse(data.toString())[0]; 
-      
-    });
+     this.dataServicio = JSON.parse(data.toString())[0];       
+    });    
+    window.open("http://190.117.160.190:8086/CrearDocumentos?datos=%7B%22rSerie%22:%2201-000000000003432%22,%22clidoc%22:%2210294765374%22%7D");
+    
+    this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+    .then(data => { 
+     this.dataServicio = JSON.parse(data.toString())[0];       
+    });    
     this.document = this.auth.AuthToken.ndnicol;
     this.nombre = this.auth.AuthToken.CNOMB;
     this.customPickerOptions = {
@@ -63,8 +74,9 @@ export class ServiciosPage implements OnInit {
         handler: () => this.endDatos()
       }]
     }
-  }
 
+  }
+  
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
@@ -73,6 +85,11 @@ export class ServiciosPage implements OnInit {
   ionViewDidEnter() {
     this.servicio = '';
     this.myStepper.reset();
+    this.api.getDataWithParms('/api/Values',{ Opcion: 16,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+    .then(data => { 
+     this.financ = JSON.parse(data.toString())[0];  
+     console.log(this.financ.nfirlet);     
+    });
   }
   
   goForward() {
@@ -92,17 +109,49 @@ export class ServiciosPage implements OnInit {
           this.FecFin= this.datos.listpago[this.datos.listpago.length-1].FecPago;         
         }  
       });
-    } else {
-      this.api.getDataWithParms('/api/Values',{ Opcion: 14,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+    } 
+    if(this.servicio == 'h') {
+      if(this.financ.nestcol == 1) {
+        this.api.getDataWithParms('/api/Values',{ Opcion: 14,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+        .then(data => { 
+          this.certificado = JSON.parse(data.toString())[0];      
+          this.importe = this.certificado.dtipcos;
+          this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
+          this.total = this.importe;
+          this.totalH = this.Cbancaria + this.importe;
+          
+        });
+      } else {
+        this.presentAlert('Usted no esta habilitado.');
+        this.servicio='';
+      }
+      
+    }
+    if(this.servicio == 'f') {
+      this.api.getDataWithParms('/api/ListCuotas',{ Opcion: 17,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
       .then(data => { 
-        this.certificado = JSON.parse(data.toString())[0];      
-        this.importe = this.certificado.dtipcos;
+        this.financiar = JSON.parse(data.toString());    
+        this.fechas = [];
+        this.importe = 0;
+        for(var a=0; a<this.financiar.listpago.length; a++) {
+          this.fechas.push({fechaPago: this.financiar.listpago[a].FecPago, Monto: this.financiar.listpago[a].pago});
+          this.importe = this.importe + this.financiar.listpago[a].pago;
+        }
         this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
         this.total = this.importe;
         this.totalH = this.Cbancaria + this.importe;
         
       });
     }
+  }
+  async presentAlert(text) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Mensaje de Alerta',
+      message: text,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
   getDatesArray(startDate, endDate) {
     var start      = startDate.split('-');
@@ -171,6 +220,7 @@ export class ServiciosPage implements OnInit {
         }  
         else
         {
+          this.presentAlert('Tenemos problemas con validar su RUC, intentelo nuevamente mas tarde.')
           this.nombre = JSON.parse(data.toString()).razon_social;
           this.direccionR=JSON.parse(data.toString()).domicilio_fiscal;
         }
@@ -193,7 +243,8 @@ export class ServiciosPage implements OnInit {
           total:this.total,vTipoope:'01',cli:'C',
           listPago: this.fechas}
       }
-    } else {
+    } 
+    if(this.servicio == 'h') {
       var rightNow = new Date();
       if(this.comprobante == 'f') {
         this.auth.Pago = 
@@ -212,7 +263,25 @@ export class ServiciosPage implements OnInit {
           listPago: [{fechaPago: rightNow.toISOString(), Monto: 20}]}
       }
     }
-    
+    if(this.servicio == 'f') {
+      var rightNow = new Date();
+      if(this.comprobante == 'f') {
+        this.auth.Pago = 
+        {clidoc:this.document,clinom:this.nombre, tipdoc:'01',vserdoc:'0001',cip: this.auth.AuthToken.ncodcol,
+          cipnom:this.auth.AuthToken.CNOMB,TipoPago:'E',
+          total:this.total,vTipoope:'02',cli:'E',
+          vcodcer:'0001',Asunto:this.Asunto,Entidad:this.Entidad,Direccion:this.Direccion,Correo:this.Correo,
+          listPago: this.fechas}
+           
+      } else {
+        this.auth.Pago = 
+        {clidoc:this.document,clinom:this.nombre, tipdoc:'03',vserdoc:'0001',cip: this.auth.AuthToken.ncodcol,
+          cipnom:this.auth.AuthToken.CNOMB,TipoPago:'E',
+          total:this.total,vTipoope:'02',cli:'C',
+          vcodcer:'0001',Asunto:this.Asunto,Entidad:this.Entidad,Direccion:this.Direccion,Correo:this.Correo,
+          listPago: this.fechas}
+      }
+    }
     
     this.navCtrl.navigateForward(['visa']);
   }

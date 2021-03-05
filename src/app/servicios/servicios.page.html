@@ -14,8 +14,9 @@
             <form [formGroup]="firstFormGroup">
             <ion-item lines="none">
               <ion-select placeholder="Elige una opción" [(ngModel)]="servicio" (ionChange)="endServ(Section2)" formControlName="firstCtrl" required>
-                <ion-select-option value="c">Pago de Cuotas</ion-select-option>
-                <ion-select-option value="h">Certificado de Habilidad</ion-select-option>
+                <ion-select-option value="c" *ngIf="financ?.nfirlet == '2'">Pago de Cuotas</ion-select-option>
+                <ion-select-option class="ion-text-wrap" value="f" *ngIf="financ?.nfirlet  == '1' || financ?.nfirlet  == '3'">Pago de Cuotas Financiada</ion-select-option>
+                <ion-select-option class="ion-text-wrap" value="h">Certificado de Habilidad</ion-select-option>
               </ion-select>
             </ion-item> 
             </form>     
@@ -28,7 +29,7 @@
         </ion-row>
       </ion-grid>      
     </mat-step>
-    <mat-step>      
+    <mat-step *ngIf="servicio  == 'c' || servicio  == 'h'">      
       <ng-template matStepLabel>COMPLETE LOS DATOS</ng-template>
       <ion-grid class="ion-no-padding">
         <ion-row *ngIf="servicio=='c'">

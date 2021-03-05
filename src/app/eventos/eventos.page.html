@@ -2,6 +2,10 @@
   <ion-toolbar>    
     <img src="assets/img/cip_cda.png" />
     <ion-item class="ion-no-padding" lines="none" button="true">
+      <ion-button size="small" color="dark" slot="start" shape="round" fill="clear" (click)="contacto()">
+        <ion-icon slot="start" name="call-outline"></ion-icon>
+        Contáctanos
+      </ion-button>  
       <ion-button size="small" slot="end" shape="round" fill="clear" (click)="filtro()">
         <ion-icon slot="start" src="assets/icon/levels.svg"></ion-icon>
         Filtro

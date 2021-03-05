@@ -11,8 +11,9 @@ import { AppComponent } from './app.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgxMercadopagoModule } from 'ngx-mercadopago';
-
-
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx'; 
+import { File } from '@ionic-native/file/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,6 +25,9 @@ import { NgxMercadopagoModule } from 'ngx-mercadopago';
     StatusBar,
     SplashScreen,
     HttpClient,
+    CallNumber,
+    EmailComposer,
+    File, 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
