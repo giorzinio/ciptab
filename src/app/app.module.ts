@@ -14,6 +14,7 @@ import { NgxMercadopagoModule } from 'ngx-mercadopago';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx'; 
 import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -28,6 +29,7 @@ import { File } from '@ionic-native/file/ngx';
     CallNumber,
     EmailComposer,
     File, 
+    FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

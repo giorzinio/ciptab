@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import {MatStepperModule, MatStepper} from '@angular/material/stepper';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ApiService } from '../providers/api/api.service';
@@ -7,6 +7,7 @@ import { AuthService } from '../providers/auth/auth.service';
 import { formatDate } from "@angular/common";
 import { AlertController } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Plugins, FilesystemDirectory } from '@capacitor/core';
 
 @Component({
@@ -48,13 +49,40 @@ export class ServiciosPage implements OnInit {
   financ: any;
   financiar: any;
   
-  constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService, private _formBuilder: FormBuilder, public alertController: AlertController, private file: File) {      
+  constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService, private _formBuilder: FormBuilder, public alertController: AlertController, private file: File, private fileOpener: FileOpener, private plt: Platform) {      
     //this.endDatos();    
     this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
      this.dataServicio = JSON.parse(data.toString())[0];       
     });    
-    window.open("http://190.117.160.190:8086/CrearDocumentos?datos=%7B%22rSerie%22:%2201-000000000003432%22,%22clidoc%22:%2210294765374%22%7D");
+    // var link = document.createElement('a');
+    // link.href = "http://190.117.160.190:8086/CrearDocumentos?datos=%7B%22rSerie%22:%2201-000000000003432%22,%22clidoc%22:%2210294765374%22%7D";
+    // link.download = 'file.pdf';
+    // link.dispatchEvent(new MouseEvent('click'));
+    this.api.getDataWithParms('/CrearDocumentos',{ rSerie:'01-000000000003432',clidoc:'10294765374' })
+    .then(data => { 
+     //this.dataServicio = JSON.parse(data.toString())[0];       
+     fetch('data:application/pdf;base64,' + data.toString(),
+          {
+            method: "GET"
+          }).then(res => res.blob()).then(blob => {
+            this.file.writeFile(this.file.externalApplicationStorageDirectory, 'statement.pdf', blob, { replace: true }).then(res => {
+              this.fileOpener.open(
+                res.toInternalURL(),
+                'application/pdf'
+              ).then((res) => {
+
+              }).catch(err => {
+                console.log('')
+              });
+            }).catch(err => {
+                  console.log('')     
+       });
+          }).catch(err => {
+                 console.log('')
+      });
+    }); 
+    
     
     this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
