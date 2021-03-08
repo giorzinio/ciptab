@@ -23,7 +23,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating" color="dark">Universidad</ion-label>
-          <ion-input value="Universidad Tecnológica del Perú" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vnomuni" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -31,7 +31,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Facultad</ion-label>
-          <ion-input value="Ingeniera" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vfacuni" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -39,7 +39,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Carrera profesional</ion-label>
-          <ion-input value="Sistemas e Informatica" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vnomesp" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -47,7 +47,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Fecha de promoción</ion-label>
-          <ion-input value="Sep, 2012" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vfincar" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -55,7 +55,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Fecha de graduación</ion-label>
-          <ion-input value="Sep, 2015" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vfecgra" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>    

@@ -54,36 +54,7 @@ export class ServiciosPage implements OnInit {
     this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
      this.dataServicio = JSON.parse(data.toString())[0];       
-    });    
-    // var link = document.createElement('a');
-    // link.href = "http://190.117.160.190:8086/CrearDocumentos?datos=%7B%22rSerie%22:%2201-000000000003432%22,%22clidoc%22:%2210294765374%22%7D";
-    // link.download = 'file.pdf';
-    // link.dispatchEvent(new MouseEvent('click'));
-    this.api.getDataWithParms('/CrearDocumentos',{ rSerie:'01-000000000003432',clidoc:'10294765374' })
-    .then(data => { 
-     //this.dataServicio = JSON.parse(data.toString())[0];       
-     fetch('data:application/pdf;base64,' + data.toString(),
-          {
-            method: "GET"
-          }).then(res => res.blob()).then(blob => {
-            this.file.writeFile(this.file.externalApplicationStorageDirectory, 'statement.pdf', blob, { replace: true }).then(res => {
-              this.fileOpener.open(
-                res.toInternalURL(),
-                'application/pdf'
-              ).then((res) => {
-
-              }).catch(err => {
-                console.log('')
-              });
-            }).catch(err => {
-                  console.log('')     
-       });
-          }).catch(err => {
-                 console.log('')
-      });
-    }); 
-    
-    
+    });  
     this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
      this.dataServicio = JSON.parse(data.toString())[0];       
@@ -296,7 +267,7 @@ export class ServiciosPage implements OnInit {
       if(this.comprobante == 'f') {
         this.auth.Pago = 
         {clidoc:this.document,clinom:this.nombre, tipdoc:'01',vserdoc:'0001',cip: this.auth.AuthToken.ncodcol,
-          cipnom:this.auth.AuthToken.CNOMB,TipoPago:'E',
+          cipnom:this.auth.AuthToken.CNOMB,TipoPagoE:'E',
           total:this.total,vTipoope:'02',cli:'E',
           vcodcer:'0001',Asunto:this.Asunto,Entidad:this.Entidad,Direccion:this.Direccion,Correo:this.Correo,
           listPago: this.fechas}
@@ -304,7 +275,7 @@ export class ServiciosPage implements OnInit {
       } else {
         this.auth.Pago = 
         {clidoc:this.document,clinom:this.nombre, tipdoc:'03',vserdoc:'0001',cip: this.auth.AuthToken.ncodcol,
-          cipnom:this.auth.AuthToken.CNOMB,TipoPago:'E',
+          cipnom:this.auth.AuthToken.CNOMB,TipoPagoE:'E',
           total:this.total,vTipoope:'02',cli:'C',
           vcodcer:'0001',Asunto:this.Asunto,Entidad:this.Entidad,Direccion:this.Direccion,Correo:this.Correo,
           listPago: this.fechas}

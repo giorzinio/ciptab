@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthService } from "./providers/auth/auth.service";
 
 const routes: Routes = [
   {
@@ -32,7 +33,8 @@ const routes: Routes = [
   },
   {
     path: 'visa',
-    loadChildren: () => import('./visa/visa.module').then( m => m.VisaPageModule)
+    loadChildren: () => import('./visa/visa.module').then( m => m.VisaPageModule),
+    canActivate: [AuthService]
   },
   {
     path: 'historial',
@@ -61,9 +63,11 @@ const routes: Routes = [
   {
     path: 'servicios',
     loadChildren: () => import('./servicios/servicios.module').then( m => m.ServiciosPageModule)
-  },  {
+  },
+  {
     path: 'complete',
-    loadChildren: () => import('./complete/complete.module').then( m => m.CompletePageModule)
+    loadChildren: () => import('./complete/complete.module').then( m => m.CompletePageModule),
+    canActivate: [AuthService]
   }
 
 ];

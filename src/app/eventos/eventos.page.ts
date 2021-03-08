@@ -155,8 +155,7 @@ export class EventosPage implements OnInit {
         event: JSON.stringify(obj)
       }
     };
-    //this.router.navigate(['eventdet'], navigationExtras);
-    this.navCtrl.navigateRoot('complete')
+    this.router.navigate(['eventdet'], navigationExtras);
   }
   filterEvent(obj) {
     this.listevent = this.listevnetbp.filter(t=>t.vnomcap ===obj.vnomcap);

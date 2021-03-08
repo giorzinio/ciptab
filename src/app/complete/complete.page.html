@@ -1,30 +1,43 @@
+<ion-header>
+  <ion-toolbar >
+    <img class="ion-padding" src="assets/img/cip_cda.png" />
+  </ion-toolbar>
+</ion-header>
+
  <ion-content>
   <ion-grid style="margin-top: 50%">
     <ion-row>
       <ion-col size="4">
       </ion-col>
       <ion-col size="4">
-        <img src="../../assets/img/check-green-1024x1024.png"/>
+        <img *ngIf="estadopago.codeBanco === 'accredited'" src="../../assets/img/check.png"/>
+        <img *ngIf="estadopago.codeBanco !== 'accredited'" src="../../assets/img/wrong.png"/>
       </ion-col>
       <ion-col size="4">
       </ion-col>
     </ion-row>
     <ion-row class="ion-text-center">
       <ion-col>
-        <ion-text><h1><strong>Operación exitosa</strong></h1></ion-text>
+        <ion-text *ngIf="estadopago.codeBanco === 'accredited'" ><h1><strong>Operación exitosa</strong></h1></ion-text>
+        <ion-text *ngIf="estadopago.codeBanco !== 'accredited'" ><h1><strong>Operación fallída</strong></h1></ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-text-center" *ngIf="estadopago.codeBanco === 'accredited'">
+      <ion-col>
+        <ion-text><h1>S/ {{estadopago.nvaltot}}</h1></ion-text>
       </ion-col>
     </ion-row>
     <ion-row class="ion-text-center">
       <ion-col>
-        <ion-text>El pago se realizó correctamente</ion-text>
+        <ion-text>{{estadopago.resultBanco}}</ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
   
 </ion-content>
-<ion-footer>
+<ion-footer class="ion-no-border">
   <ion-toolbar>
-    <ion-button color="success" expand="full">Descargar Boleta</ion-button>
-    <ion-button color="primary" expand="full">Finalizar</ion-button>
+    <ion-button color="success" expand="full" *ngIf="estadopago.codeBanco === 'accredited'" (click)="guardarvoucher()" >Descargar boleta</ion-button>
+    <ion-button color="primary" expand="full" (click)="finalizar()">Finalizar</ion-button>
   </ion-toolbar>
 </ion-footer>

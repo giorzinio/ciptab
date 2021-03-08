@@ -4,7 +4,8 @@ import { NavController } from '@ionic/angular';
 import { ApiService } from '../providers/api/api.service';
 import { AuthService } from '../providers/auth/auth.service';
 import { NgxMercadopagoService } from 'ngx-mercadopago';
-
+import { Router } from '@angular/router';
+import { NavigationExtras } from '@angular/router';
  
  
 //export const TargetaPago: {}="";    
@@ -27,7 +28,7 @@ export class VisaPage implements OnInit {
   dataRuc: any;
   TargetaPago: any;
 
-  constructor(public navCtrl:NavController, public alertController: AlertController,public api: ApiService, public auth: AuthService,private ngxMpService: NgxMercadopagoService ) { 
+  constructor(public navCtrl:NavController, public alertController: AlertController,public api: ApiService, public auth: AuthService,private ngxMpService: NgxMercadopagoService, public router: Router) { 
    //Mercadopago.setPublishableKey("APP_USR-0154516a-f3e3-46a7-af72-213b46798cb3");
     //Mercadopago.getIdentificationTypes();
     //var JsonToken = "APP_USR-460356198782391-021118-1cd8d39ee643c6590cc1b9adbd64edc5-433336836";
@@ -51,18 +52,17 @@ async createToken() {
               this.TargetaPago.token = data.data.id;
              
             this.api.getDataWithParms('/api/PagoVisa',{Pagos: this.auth.Pago  ,TargetaPago:  this.TargetaPago })
-                .then(data1 => { 
-                var r  = data1.toString(); 
-      
-                alert(r);
-                });
-            }
-            else {
-              alert("Ocurrio un error, verifique bien los datos!!!");
-          }
+                .then(data1 => {     
+                let navigationExtras: NavigationExtras = {
+                  queryParams: {
+                    event: JSON.stringify(data1)
+                  }
+                };
+                this.router.navigate(['complete'], navigationExtras)
         });
+      }
+    });
 }
-
 // async getInstallments() {
 //     const issuer = this.ngxMpService.getInstallments({
 //       payment_type_id: 'XX',
@@ -70,8 +70,7 @@ async createToken() {
 //       bin: 000000
 //     }).toPromise();
 // }
-
-  async presentAlert() {
+  guardarPago() {
     this.TargetaPago = {};
     this.TargetaPago.cardNumber = '4285810008933558';
     this.TargetaPago.securityCode = '080';
@@ -97,35 +96,9 @@ async createToken() {
       else{
         alert("Ocurrio un error, verifique bien los datos!!!");
       }
-   
-
     });
+  }  
   
-    // this.getPaymentMethod().then(data => { 
-    //   this.TargetaPago.paymentMethodId = data.data[0];
-    //   this.TargetaPago.public_key = 'APP_USR-0154516a-f3e3-46a7-af72-213b46798cb3';
-    //   this.TargetaPago.email = 'fiostep@gmail.com';
-    //   this.createToken();
-    // });;
- 
-    
-    
-    //this.getCardToken();
-    //const alert = await this.alertController.create({
-      //cssClass: 'my-custom-class',
-      //header: 'Mensaje de Confirmación',
-      //message: 'Se realizo el pago correctamente',
-      //buttons: [{
-       // text: 'Aceptar',
-       // handler: () => {
-        //  this.getCardToken();
-          //this.navCtrl.navigateRoot('/tabs/eventos');
-        //}
-      //}]
-    //});
-
-    //await alert.present();
-  }
   getDate() {
     var dmes = new Date(this.tarjeta.mexp),
     month = '' + (dmes.getMonth() + 1),

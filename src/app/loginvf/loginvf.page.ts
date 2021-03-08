@@ -16,7 +16,7 @@ export class LoginvfPage implements OnInit {
   cuatro: '';
   cinco: '';
   seis: '';
-  timeLeft: number = 60;
+  timeLeft: number = 120;
   interval;
 
   constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService,private route: ActivatedRoute, private router: Router) {
@@ -37,7 +37,7 @@ export class LoginvfPage implements OnInit {
       } else {        
         this.api.getDataWithParms('/api/Envios',{ ncodcol: this.user.ncodcol, vcorcol: this.user.vcorcol })
         .then(data => {         
-          this.timeLeft = 60;
+          this.timeLeft = 120;
         }); 
       }
     },1000)

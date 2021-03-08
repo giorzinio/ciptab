@@ -22,7 +22,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating" color="dark">Capítulo</ion-label>
-          <ion-input value="Sistemas e Informática" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vnomcap" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -30,7 +30,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Fecha de Colegiatura</ion-label>
-          <ion-input value="2018-01-15" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.dfeccol" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -38,7 +38,7 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Situación</ion-label>
-          <ion-input value="Activo colegiado" readonly></ion-input>
+          <ion-input [(ngModel)]="datos.vnomsit" readonly></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>

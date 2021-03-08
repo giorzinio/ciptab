@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router, CanActivate, ActivatedRouteSnapshot } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ export class AuthService {
   isLoggedin : boolean;
   AuthToken;
   Pago;
-  constructor() {
+  constructor(private router: Router) {
     this.isLoggedin = false;
     this.AuthToken = null;
     this.Pago = null;
@@ -32,6 +33,15 @@ export class AuthService {
       this.isLoggedin = false;
       this.AuthToken = null;
       window.localStorage.removeItem('cipuser');
+  }
+
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    console.log(route);   
+    if (!this.Pago) {
+      this.router.navigate(["tabs"]);
+      return false;
+    }
+    return true;
   }
 
   logout() {

@@ -13,7 +13,7 @@
       <h1 class="number-text">{{tarjeta.Numero.toString().substring(0, 4) + "-" + tarjeta.Numero.toString().substring(4, 8) + "-" + tarjeta.Numero.toString().substring(8, 12) + "-" + tarjeta.Numero.toString().substring(12, tarjeta.Numero.toString().length)}}</h1>
     </div>
     <div class="fv">
-      <h1 class="fv-text">Fecha Vencimiento {{getDate()}}</h1>
+      <h1 class="fv-text">Fecha Vencimiento {{tarjeta.mexp + '/'+tarjeta.aexp}}</h1>
     </div>
     <div class="nombre">
       <h1 class="nombre-text">{{tarjeta.Nombre}}</h1>
@@ -59,7 +59,7 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-button expand="full" (click)="presentAlert()">
+  <ion-button expand="full" (click)="guardarPago()">
     PAGAR
   </ion-button>
 </ion-footer>
