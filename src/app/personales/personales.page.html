@@ -51,40 +51,48 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="4">
-        <ion-item>
+      <ion-col size="12">
+        <ion-item lines="none">
           <ion-label position="floating">País</ion-label>
-          <ion-input [(ngModel)]="datos.vnompai"></ion-input>
+          <ion-select placeholder="Seleccione un país" name="pais" [(ngModel)]="pais">
+            <ion-select-option *ngFor="let p of listpais" [value]="p.ncodpai">{{p.vnompai}}</ion-select-option>
+          </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size="4">
-        <ion-item>
+      <ion-col size="12">
+        <ion-item lines="none">
           <ion-label position="floating">Departamento</ion-label>
-          <ion-input [(ngModel)]="datos.vnomdep"></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col size="4">
-        <ion-item>
+          <ion-select placeholder="Selecciona un departamento" name="departamento" [(ngModel)]="departamento" (ionChange)="filterprov()">
+            <ion-select-option *ngFor="let dep of listdep" [value]="dep.ncoddep">{{dep.vnomdep}}</ion-select-option>
+          </ion-select>
+        </ion-item>   
+      </ion-col>      
+    </ion-row>
+    <ion-row>      
+      <ion-col size="12">
+        <ion-item lines="none">
           <ion-label position="floating">Provincia</ion-label>
-          <ion-input [(ngModel)]="datos.vnompro"></ion-input>
-        </ion-item>
-      </ion-col>
+          <ion-select placeholder="Selecciona una provincia" name="provincia" [(ngModel)]="provincia" (ionChange)="filterdist()">
+            <ion-select-option *ngFor="let prov of listprov" [value]="prov.ncodpro">{{prov.vnompro}}</ion-select-option>
+          </ion-select>
+        </ion-item>   
+      </ion-col> 
+      <ion-col size="12">
+        <ion-item lines="none">
+          <ion-label position="floating">Distrito</ion-label>
+          <ion-select placeholder="Selecciona un distrito" name="distrito" [(ngModel)]="distrito">
+            <ion-select-option *ngFor="let dist of listdist" [value]="dist.ncoddis">{{dist.vnomdis}}</ion-select-option>
+          </ion-select>
+        </ion-item>  
+      </ion-col>     
     </ion-row>
     <ion-row>
-      <ion-col size="4">
-        <ion-item>
-          <ion-label position="floating">Distrito</ion-label>
-          <ion-input [(ngModel)]="datos.vnomdis"></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col size="8">
+      <ion-col size="12">
         <ion-item>
           <ion-label position="floating">Dirección</ion-label>
           <ion-input [(ngModel)]="datos.vdircol"></ion-input>
         </ion-item>
       </ion-col>
-    </ion-row>
-    <ion-row>
       <ion-col size="6">
         <ion-item>
           <ion-label position="floating">Teléfono</ion-label>

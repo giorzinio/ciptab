@@ -18,7 +18,7 @@ export class LoginvfPage implements OnInit {
   seis: '';
   timeLeft: number = 120;
   interval;
-
+  
   constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService,private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
       if (params && params.user) {
@@ -28,19 +28,22 @@ export class LoginvfPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit() {    
   }
+  
+  
   startTimer() {
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
-      } else {        
-        this.api.getDataWithParms('/api/Envios',{ ncodcol: this.user.ncodcol, vcorcol: this.user.vcorcol })
-        .then(data => {         
-          this.timeLeft = 120;
-        }); 
       }
     },1000)
+  }
+  resendEmail() {
+    this.api.getDataWithParms('/api/Envios',{ ncodcol: this.user.ncodcol, vcorcol: this.user.vcorcol })
+    .then(data => {         
+      this.timeLeft = 120;
+    }); 
   }
   ingresar() {
     var codverif = this.uno.toString() + this.dos.toString() + this.tres.toString() + this.cuatro.toString() + this.cinco.toString() + this.seis.toString();

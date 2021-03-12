@@ -16,30 +16,29 @@
     </ion-row>
     <ion-row>
       <ion-col size=2>
-        <input #Field1 (keyup)="gotoNextField(Field1,Field2)" [(ngModel)]="uno" id="Good" type="number" placeholder="-" pattern="\d*" max="1">
+        <input #Field1 (keyup)="gotoNextField(Field1,Field2)" [(ngModel)]="uno" id="Good" type="number" placeholder="-" max="1">
       </ion-col>
       <ion-col size=2>
-        <input #Field2 (keyup)="gotoNextField(Field2,Field3)" [(ngModel)]="dos" id="Good" type="number" placeholder="-" pattern="\d*" max="1">
+        <input #Field2 (keyup)="gotoNextField(Field2,Field3)" [(ngModel)]="dos" id="Good" type="number" placeholder="-" max="1">
       </ion-col>
       <ion-col size=2>
-        <input #Field3 (keyup)="gotoNextField(Field3,Field4)" [(ngModel)]="tres" id="Good" type="number" placeholder="-" pattern="\d*" max="1">
+        <input #Field3 (keyup)="gotoNextField(Field3,Field4)" [(ngModel)]="tres" id="Good" type="number" placeholder="-" max="1">
       </ion-col>
       <ion-col size=2>
-        <input #Field4 (keyup)="gotoNextField(Field4,Field5)" [(ngModel)]="cuatro" id="Good" type="number" placeholder="-" pattern="\d*" max="1">
+        <input #Field4 (keyup)="gotoNextField(Field4,Field5)" [(ngModel)]="cuatro" id="Good" type="number" placeholder="-" max="1">
       </ion-col>
       <ion-col size=2>
-        <input #Field5 (keyup)="gotoNextField(Field5,Field6)" [(ngModel)]="cinco" id="Good" type="number" placeholder="-" pattern="\d*" max="1">
+        <input #Field5 (keyup)="gotoNextField(Field5,Field6)" [(ngModel)]="cinco" id="Good" type="number" placeholder="-" max="1">
       </ion-col>
       <ion-col size=2>
-        <input #Field6 id="Good" [(ngModel)]="seis" type="number" placeholder="-" pattern="\d*" max="1">
+        <input #Field6 id="Good" [(ngModel)]="seis" type="number" placeholder="-" max="1">
       </ion-col>
-    </ion-row>    
+    </ion-row>   
     <ion-row>
-      <ion-col class="ion-text-start" size="12">
-        <ion-text *ngIf="!isShown" color="medium">Volver a enviar código en: {{timeLeft}} segundos</ion-text>            
-      </ion-col>
-      <ion-col>
-        <ion-text color="dark" *ngIf="timeLeft == 0">Enviando nuevo codigo de acceso...</ion-text>      
+      <ion-col class="ion-text-center">
+        <ion-button expand="block" fill="outline" color="primary" (click)="resendEmail()" [disabled]="timeLeft>0">          
+          {{timeLeft > 0 ? 'Volver a enviar código en: '+ timeLeft + ' segundos' : 'Enviar nuevo código'}}
+        </ion-button>
       </ion-col>
     </ion-row>
     <ion-row>

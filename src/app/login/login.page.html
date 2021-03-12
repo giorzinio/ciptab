@@ -1,6 +1,5 @@
-<ion-content class="ion-padding"> 
-  <ion-slides>
-
+<ion-content class="ion-padding" fullscreen> 
+  <ion-slides #mySlider pager="true" >
     <ion-slide>
       <div class="slide">
         <img src="assets/img/Recurso 7.png"/>
@@ -8,26 +7,22 @@
         <p><b>CIP Móvil</b> es una aplicación donde pódras ver los eventos, pagar tus cuotas y certificado de habilidad, ver tu historial de pagos y datos de tu perfil.</p>
       </div>
     </ion-slide>
-
     <ion-slide>
       <img src="assets/img/Recurso 3.png"/>
       <h2>Registrate</h2>
       <p>Deberas validar tu código de colegiado en la aplicación, y te mostrara el correo para que se te envie tu codigo de ingreso.</p>
     </ion-slide>
-
     <ion-slide>
       <img src="assets/img/Recurso 5.png"/>
       <h2>Revisar Codigo</h2>
       <p>Entraras a la aplicación de correo en donde se te envio tu codigo.</p>
     </ion-slide>
-
     <ion-slide>
       <img src="assets/img/Recurso 6.png"/>
       <h2>Verificar Codigo</h2>
       <p>Por ultimo introduce el código que se envio a tu correo para iniciar sesión.</p>
       <ion-button (click)="tipo('correo')" fill="clear">COMENZAR <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
-    </ion-slide>
-
+    </ion-slide>    
   </ion-slides>
   <!-- <ion-grid>
     <ion-row>
@@ -59,4 +54,11 @@
     </ion-row>
   </ion-grid> -->
 </ion-content>
-
+<!-- <ion-footer class="ion-no-border" fill="outline">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="swipeNext()" fill="clear">SIGUIENTE <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-footer> -->

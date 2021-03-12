@@ -48,7 +48,11 @@ export class ServiciosPage implements OnInit {
   Correo: any;
   financ: any;
   financiar: any;
-  
+  listdep: any;
+  listprov: any;
+  listprovbc: any;
+  departamento: any;
+  provincia: any;
   constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService, private _formBuilder: FormBuilder, public alertController: AlertController, private file: File, private fileOpener: FileOpener, private plt: Platform) {      
     //this.endDatos();    
     this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
@@ -118,7 +122,15 @@ export class ServiciosPage implements OnInit {
           this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
           this.total = this.importe;
           this.totalH = this.Cbancaria + this.importe;
-          
+          this.api.getDataWithParms('/api/Values',{ Opcion: 19,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+          .then(data => { 
+            this.listdep = JSON.parse(data.toString());
+          });
+          this.api.getDataWithParms('/api/Values',{ Opcion: 20,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+          .then(data => { 
+            this.listprov = JSON.parse(data.toString());
+            this.listprovbc = this.listprov;
+          });
         });
       } else {
         this.presentAlert('Usted no esta habilitado.');
@@ -142,6 +154,12 @@ export class ServiciosPage implements OnInit {
         
       });
     }
+  }
+  filterProv() {
+    this.provincia = null;
+    this.listprov = this.listprovbc;
+    this.listprov = this.listprov.filter(t=>t.ncoddep === this.departamento);
+    console.log(this.listprov)
   }
   async presentAlert(text) {
     const alert = await this.alertController.create({
@@ -199,6 +217,35 @@ export class ServiciosPage implements OnInit {
     //   this.tipo.pagar = 'edit';
     // }
   }
+  endDatosFinan() {
+    var dates = this.getDatesArray(this.FecIni,this.FecFin);
+    this.fechas = [];
+    this.importe = 0;
+    for(var a=0; a< dates.length; a++) {
+      if(a < this.datos.listpago.length) {
+        this.fechas.push({fechaPago: this.datos.listpago[a].FecPago, Monto: this.datos.listpago[a].pago});
+        this.importe = this.importe + this.datos.listpago[a].pago;
+      } else {
+        if(this.datos.listpago[0].dfecvit < dates[a]) {
+          this.fechas.push({fechaPago: dates[a], Monto: 2.5});
+          this.importe = this.importe + 2.5;
+        } else {          
+          this.fechas.push({fechaPago: dates[a], Monto: 20});
+          this.importe = this.importe + 20;
+        }        
+      }
+      this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
+  
+      this.total = this.importe;
+      this.totalH = this.Cbancaria + this.importe;
+    }
+    console.log(this.fechas);
+    // if(this.FecFin) {
+    //   this.tipo.serv = 'complete';
+    //   this.tipo.datos = 'complete';
+    //   this.tipo.pagar = 'edit';
+    // }
+  }
   tipocomp() {
     if(this.comprobante == 'f') {
       this.document = '';
@@ -219,7 +266,7 @@ export class ServiciosPage implements OnInit {
         }  
         else
         {
-          this.presentAlert('Tenemos problemas con validar su RUC, intentelo nuevamente mas tarde.')
+          this.presentAlert('Los servicios de la sunat estan temporalmente inestables, intentelo mas tarde.')
           this.nombre = JSON.parse(data.toString()).razon_social;
           this.direccionR=JSON.parse(data.toString()).domicilio_fiscal;
         }

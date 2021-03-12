@@ -12,6 +12,17 @@ export class DatoscipPage implements OnInit {
     vnomcap :'',
     nestcol: ''
   }
+  listpais: any;
+  listdep: any;
+  listprov: any;
+  listprovbc: any;
+  listdist: any;
+  listdistbc: any;
+  departamento: any;
+  provincia: any;
+  distrito: any;
+  dirección: any;
+
   constructor(public api: ApiService, public auth: AuthService) { 
     this.api.getDataWithParms('/api/Values',{ Opcion: 3,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
@@ -20,7 +31,6 @@ export class DatoscipPage implements OnInit {
      console.log(this.datos);   
     });  
   }
-
   ngOnInit() {
   }
 

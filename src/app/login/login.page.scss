@@ -8,6 +8,10 @@
 // .logo {
 //     max-width: 50%;
 // }
+ion-toolbar {
+  --background: transparent;
+  --ion-color-base: transparent !important;
+  }
 ion-slides {
     height: 100%;
   }
@@ -41,3 +45,6 @@ ion-slides {
   p b {
     color: var(--ion-text-color, #000000);
   }
+  ion-slides {
+    --bullet-background: rgb(0, 0, 0);
+}

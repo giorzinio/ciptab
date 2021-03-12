@@ -29,7 +29,7 @@
         </ion-row>
       </ion-grid>      
     </mat-step>
-    <mat-step *ngIf="servicio  == 'c' || servicio  == 'h'">      
+    <mat-step>      
       <ng-template matStepLabel>COMPLETE LOS DATOS</ng-template>
       <ion-grid class="ion-no-padding">
         <ion-row *ngIf="servicio=='c'">
@@ -42,6 +42,18 @@
           <ion-col>
             <ion-label>Hasta</ion-label>
             <ion-datetime displayFormat="YYYY MM" cancelText="Cancelar" doneText="Hecho"[(ngModel)]="FecFin" [min]="min" max="2099-12" (ionChange)="endDatos()"></ion-datetime>
+          </ion-col>      
+        </ion-row>
+        <ion-row *ngIf="servicio=='f'">
+          <ion-col>
+            <ion-label>Desde</ion-label>
+            <ion-datetime displayFormat="YYYY MM"  [(ngModel)]="FecIni"  disabled="true"></ion-datetime>
+          </ion-col>      
+        </ion-row>
+        <ion-row *ngIf="servicio=='f'">
+          <ion-col>
+            <ion-label>Hasta</ion-label>
+            <ion-datetime displayFormat="YYYY MM" cancelText="Cancelar" doneText="Hecho"[(ngModel)]="FecFin" [min]="min" max="2099-12" (ionChange)="endDatosFinan()"></ion-datetime>
           </ion-col>      
         </ion-row>
         <ion-row *ngIf="servicio=='h'">
@@ -57,8 +69,7 @@
         <ion-row *ngIf="servicio=='h'">
           <ion-col>
             <ion-label>Asunto</ion-label>
-            <ion-textarea  [(ngModel)]="Asunto"  placeholder="Ingresa el asunto aqui..."></ion-textarea>
-             
+            <ion-textarea  [(ngModel)]="Asunto"  placeholder="Ingresa el asunto aqui..."></ion-textarea>             
           </ion-col>      
         </ion-row>
         <ion-row *ngIf="servicio=='h'">
@@ -66,19 +77,25 @@
             <ion-label>Entidad</ion-label>
             <ion-textarea  [(ngModel)]="Entidad"  placeholder="Ingresa la entidad aqui..."></ion-textarea>
           </ion-col>      
-        </ion-row>
-        <ion-row *ngIf="servicio=='h'">
-          <ion-col>
-            <ion-label>Dirección</ion-label>
-            <ion-textarea  [(ngModel)]="Direccion" placeholder="Ingresa la dirección aqui..."></ion-textarea>
-          </ion-col>
-        </ion-row>
+        </ion-row>       
         <ion-row *ngIf="servicio=='h'">
           <ion-col>
             <ion-label>Correo</ion-label>
             <ion-input  [(ngModel)]="Correo" placeholder="Ingresa el correo aqui..."></ion-input>
           </ion-col>
         </ion-row>
+        <ion-item class="ion-no-padding" lines="none">
+          <ion-label>Departamento</ion-label>
+          <ion-select placeholder="Selecciona un departamento" [(ngModel)]="departamento" (ionChange)="filterProv()">
+            <ion-select-option *ngFor="let dep of listdep" [value]="dep.ncoddep">{{dep.vnomdep}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="ion-no-padding" lines="none">
+          <ion-label>Provincia</ion-label>
+          <ion-select placeholder="Selecciona una provincia" [(ngModel)]="provincia">
+            <ion-select-option *ngFor="let prov of listprov" [value]="prov.ncodpro">{{prov.vnompro}}</ion-select-option>
+          </ion-select>
+        </ion-item>
         <ion-row>
           <ion-col>
             <ion-button (click)="goForward(stepper)" shape="round" expand="full" size="small">Siguiente</ion-button>
