@@ -37,7 +37,7 @@
    <div *ngIf="listevent">
     <ion-slides  #slides (ionSlideWillChange) ="slideNumber()" pager="true" [options]="slideOpts">
       <ion-slide *ngFor="let gen of generales" (click)="detalle(gen)">
-        <ion-card id="oneColumn" class="md hydrated" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(data:image/jpg;base64,'+ gen.imgEvento + ')'}">         
+        <ion-card id="oneColumn" class="md hydrated" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(' + api.api + '/uploads/img/'+ gen.imgEvento + ')'}">         
           <ion-grid class="ion-no-padding">
             <ion-row>
               <ion-col size="8">
@@ -65,7 +65,7 @@
         </ion-card>
       </ion-slide>    
     </ion-slides>
-    <ion-card (click)="detalle(event)" id="oneColumn" class="md hydrated" *ngFor="let event of listevent" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(data:image/jpg;base64,'+ event.imgEvento + ')'}">
+    <ion-card (click)="detalle(event)" id="oneColumn" class="md hydrated" *ngFor="let event of listevent" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(' + api.api + '/uploads/img/'+ event.imgEvento + ')'}">
       <div class="section1">
         <ion-button color="danger" size="small" fill="solid">{{event.vnomcap}}</ion-button>
       </div>

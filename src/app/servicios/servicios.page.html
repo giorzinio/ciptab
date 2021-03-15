@@ -46,24 +46,34 @@
         </ion-row>
         <ion-row *ngIf="servicio=='f'">
           <ion-col>
-            <ion-label>Desde</ion-label>
-            <ion-datetime displayFormat="YYYY MM"  [(ngModel)]="FecIni"  disabled="true"></ion-datetime>
+            <ion-list lines="none" class="ion-no-padding">
+              <ion-item *ngFor="let cuota of cuotas?.listpago; let i = index">
+                <ion-label>{{cuota.Cuota}}</ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="cuota.checkedCuota" [disabled]="disabledOp(i)" (ionChange)="endDatosFinan()"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+            <!-- <ion-item lines="none" class="ion-no-padding">
+              <ion-label>Elegir cuotas</ion-label>
+              <ion-select class="custom-options" placeholder="Elige una opción" [(ngModel)]="financiar" multiple="true" (ionSelect)="endDatosFinan()">
+                <ion-select-option *ngFor="let cuota of cuotas?.listpago; let i = index " [disabled]="enabledOp(i)" [value]="cuota">{{cuota.Cuota}}</ion-select-option>
+              </ion-select>
+            </ion-item>  -->
           </ion-col>      
         </ion-row>
-        <ion-row *ngIf="servicio=='f'">
+        <!-- <ion-row *ngIf="servicio=='f'">
           <ion-col>
             <ion-label>Hasta</ion-label>
-            <ion-datetime displayFormat="YYYY MM" cancelText="Cancelar" doneText="Hecho"[(ngModel)]="FecFin" [min]="min" max="2099-12" (ionChange)="endDatosFinan()"></ion-datetime>
+            <ion-datetime displayFormat="YYYY MM" cancelText="Cancelar" doneText="Hecho" [(ngModel)]="FecFin" [min]="min" max="2099-12" (ionChange)="endDatosFinan()"></ion-datetime>
           </ion-col>      
-        </ion-row>
+        </ion-row> -->
         <ion-row *ngIf="servicio=='h'">
           <ion-col size="6">
             <ion-label>Fec. Incorporación</ion-label>
-            <ion-datetime displayFormat="DD MM YYYY"    value="2016-12-05T13:47:20.789" disabled="true"></ion-datetime>
+            <ion-datetime displayFormat="DD MM YYYY"  [(ngModel)]="certificado.dfeccol" disabled="true"></ion-datetime>
           </ion-col>      
           <ion-col size="6" class="ion-text-end">
             <ion-label>Fec. Vencimiento</ion-label>
-            <ion-datetime displayFormat="DD MM YYYY"  value="2021-04-09T13:47:20.789" disabled="true"></ion-datetime>
+            <ion-datetime displayFormat="DD MM YYYY" [(ngModel)]="certificado.dnaccol" disabled="true"></ion-datetime>
           </ion-col>  
         </ion-row>    
         <ion-row *ngIf="servicio=='h'">
@@ -84,13 +94,13 @@
             <ion-input  [(ngModel)]="Correo" placeholder="Ingresa el correo aqui..."></ion-input>
           </ion-col>
         </ion-row>
-        <ion-item class="ion-no-padding" lines="none">
+        <ion-item  *ngIf="servicio=='h'" class="ion-no-padding" lines="none">
           <ion-label>Departamento</ion-label>
           <ion-select placeholder="Selecciona un departamento" [(ngModel)]="departamento" (ionChange)="filterProv()">
             <ion-select-option *ngFor="let dep of listdep" [value]="dep.ncoddep">{{dep.vnomdep}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item class="ion-no-padding" lines="none">
+        <ion-item  *ngIf="servicio=='h'" class="ion-no-padding" lines="none">
           <ion-label>Provincia</ion-label>
           <ion-select placeholder="Selecciona una provincia" [(ngModel)]="provincia">
             <ion-select-option *ngFor="let prov of listprov" [value]="prov.ncodpro">{{prov.vnompro}}</ion-select-option>
@@ -258,7 +268,7 @@
           <ion-text color="medium">Importe</ion-text>
         </ion-col>
         <ion-col class="ion-text-end">
-          <ion-text color="medium">{{importe.toFixed(2)}}</ion-text>                 
+          <ion-text color="medium">S/ {{importe.toFixed(2)}}</ion-text>                 
         </ion-col>
       </ion-row>
       <ion-row>

@@ -13,7 +13,11 @@ export class PersonalesPage implements OnInit {
     ndepnac: '',
     npronac: '',
     ndirdis: '',
-    nlugnac: ''
+    nlugnac: '',
+    vdircol: '',
+    vtelcol: '',
+    vcelcol: '',
+    vcorcol: ''
   }
   primeracarga: any;
   listpais: any;
@@ -34,11 +38,11 @@ export class PersonalesPage implements OnInit {
     .then(data => { 
      this.datos = JSON.parse(data.toString())[0];    
      console.log(this.datos);   
-     this.api.getDataWithParms('/api/Values',{ Opcion: 21,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
-      .then(data => { 
-        this.listpais = JSON.parse(data.toString());
-        this.filterpais();
-      });
+    //  this.api.getDataWithParms('/api/Values',{ Opcion: 21,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+    //   .then(data => { 
+    //     this.listpais = JSON.parse(data.toString());
+    //     this.filterpais();
+    //   });
       this.api.getDataWithParms('/api/Values',{ Opcion: 19,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
       .then(data => { 
         this.listdep = JSON.parse(data.toString());
@@ -56,11 +60,11 @@ export class PersonalesPage implements OnInit {
       this.filterdist();
     });
   }
-  filterpais() {
-    //this.listdep = this.listdepbc;
-    this.pais = this.listpais.filter(t=>t.ncodpai === this.datos.nlugnac)[0].ncodpai;
-    console.log(this.departamento)
-  }
+  // filterpais() {
+  //   //this.listdep = this.listdepbc;
+  //   this.pais = this.listpais.filter(t=>t.ncodpai === this.datos.nlugnac)[0].ncodpai;
+  //   console.log(this.departamento)
+  // }
   filterdep() {
     //this.listdep = this.listdepbc;
     this.departamento = this.listdep.filter(t=>t.ncoddep === this.datos.ndepnac)[0].ncoddep;
@@ -89,7 +93,40 @@ export class PersonalesPage implements OnInit {
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);
   }
-  ngOnInit() {
+  ngOnInit() { }
+  save() {
+    let json = { opt: 1, ncodcol: this.auth.AuthToken.ncodcol, distrito: this.distrito, provincia: this.provincia, departamento: this.departamento, dirección: this.datos.vdircol, vcelcol: this.datos.vcelcol, vcorcol: this.datos.vcorcol };
+    if(!this.distrito) {
+      alert('El campo distrito debe ser llenado');
+      return;
+    }
+    if(!this.provincia) {
+      alert('El campo provincia debe ser llenado');
+      return;
+    }
+    if(!this.departamento) {
+      alert('El campo departamento debe ser llenado');
+      return;
+    }
+    // if(!this.pais) {
+    //   alert('El campo pais debe ser llenado');
+    //   return;
+    // }
+    if(!this.datos.vdircol) {
+      alert('El campo dirección debe ser llenado');
+      return;
+    }
+    if(!this.datos.vcelcol) {
+      alert('El campo celular debe ser llenado');
+      return;
+    }
+    if(!this.datos.vcorcol) {
+      alert('El campo email debe ser llenado');
+      return;
+    }
+    this.api.getDataWithParms('/api/DatoColegiado',{  opt: 1, ncodcol: this.auth.AuthToken.ncodcol, distrito: this.distrito, provincia: this.provincia, departamento: this.departamento, dirección: this.datos.vdircol, vcelcol: this.datos.vcelcol, vcorcol: this.datos.vcorcol  })
+      .then(data => { 
+         alert('Se actualizo correctamente!!!')
+      });
   }
-
 }

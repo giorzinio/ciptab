@@ -53,16 +53,12 @@ export class ServiciosPage implements OnInit {
   listprovbc: any;
   departamento: any;
   provincia: any;
+  fecincorp: any;
+  fecvenci: any;
+  cuotas: any;
+  select: any;
   constructor(public navCtrl:NavController, public api: ApiService, public auth: AuthService, private _formBuilder: FormBuilder, public alertController: AlertController, private file: File, private fileOpener: FileOpener, private plt: Platform) {      
-    //this.endDatos();    
-    this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
-    .then(data => { 
-     this.dataServicio = JSON.parse(data.toString())[0];       
-    });  
-    this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
-    .then(data => { 
-     this.dataServicio = JSON.parse(data.toString())[0];       
-    });    
+    //this.endDatos();          
     this.document = this.auth.AuthToken.ndnicol;
     this.nombre = this.auth.AuthToken.CNOMB;
     this.customPickerOptions = {
@@ -88,6 +84,14 @@ export class ServiciosPage implements OnInit {
   ionViewDidEnter() {
     this.servicio = '';
     this.myStepper.reset();
+    this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+    .then(data => { 
+     this.dataServicio = JSON.parse(data.toString())[0];       
+    });  
+    this.api.getDataWithParms('/api/Values',{ Opcion: 12,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+    .then(data => { 
+     this.dataServicio = JSON.parse(data.toString())[0];       
+    });  
     this.api.getDataWithParms('/api/Values',{ Opcion: 16,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
      this.financ = JSON.parse(data.toString())[0];  
@@ -114,6 +118,7 @@ export class ServiciosPage implements OnInit {
       });
     } 
     if(this.servicio == 'h') {
+      this.Cbancaria = 0;
       if(this.financ.nestcol == 1) {
         this.api.getDataWithParms('/api/Values',{ Opcion: 14,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
         .then(data => { 
@@ -139,19 +144,9 @@ export class ServiciosPage implements OnInit {
       
     }
     if(this.servicio == 'f') {
-      this.api.getDataWithParms('/api/ListCuotas',{ Opcion: 17,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
+      this.api.getDataWithParms('/api/ListCuotasEspecial',{ Opcion: 17,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
       .then(data => { 
-        this.financiar = JSON.parse(data.toString());    
-        this.fechas = [];
-        this.importe = 0;
-        for(var a=0; a<this.financiar.listpago.length; a++) {
-          this.fechas.push({fechaPago: this.financiar.listpago[a].FecPago, Monto: this.financiar.listpago[a].pago});
-          this.importe = this.importe + this.financiar.listpago[a].pago;
-        }
-        this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
-        this.total = this.importe;
-        this.totalH = this.Cbancaria + this.importe;
-        
+        this.cuotas = JSON.parse(data.toString());          
       });
     }
   }
@@ -192,6 +187,7 @@ export class ServiciosPage implements OnInit {
     var dates = this.getDatesArray(this.FecIni,this.FecFin);
     this.fechas = [];
     this.importe = 0;
+    this.Cbancaria = 0;
     for(var a=0; a< dates.length; a++) {
       if(a < this.datos.listpago.length) {
         this.fechas.push({fechaPago: this.datos.listpago[a].FecPago, Monto: this.datos.listpago[a].pago});
@@ -218,33 +214,30 @@ export class ServiciosPage implements OnInit {
     // }
   }
   endDatosFinan() {
-    var dates = this.getDatesArray(this.FecIni,this.FecFin);
     this.fechas = [];
     this.importe = 0;
-    for(var a=0; a< dates.length; a++) {
-      if(a < this.datos.listpago.length) {
-        this.fechas.push({fechaPago: this.datos.listpago[a].FecPago, Monto: this.datos.listpago[a].pago});
-        this.importe = this.importe + this.datos.listpago[a].pago;
-      } else {
-        if(this.datos.listpago[0].dfecvit < dates[a]) {
-          this.fechas.push({fechaPago: dates[a], Monto: 2.5});
-          this.importe = this.importe + 2.5;
-        } else {          
-          this.fechas.push({fechaPago: dates[a], Monto: 20});
-          this.importe = this.importe + 20;
-        }        
-      }
-      this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
-  
-      this.total = this.importe;
-      this.totalH = this.Cbancaria + this.importe;
+    this.Cbancaria = 0;
+    for(var a=0; a< this.cuotas.listpago.length; a++) {
+      if(this.cuotas.listpago[a].checkedCuota) {
+        for(var i=0; i < this.cuotas.listpago[a].listPago.length; i++) {
+          this.fechas.push({fechaPago: this.cuotas.listpago[a].listPago[i].FecPago, Monto: this.cuotas.listpago[a].listPago[i].pago})
+          this.importe = this.importe + this.cuotas.listpago[a].listPago[i].pago;
+        }
+        this.Cbancaria= Math.round(((this.importe+this.dataServicio.IgvI)/this.dataServicio.costanteBanco* 100)) / 100 - this.importe;
+    
+        this.total = this.importe;
+        //this.totalH = this.Cbancaria + this.importe;
+      }      
     }
-    console.log(this.fechas);
-    // if(this.FecFin) {
-    //   this.tipo.serv = 'complete';
-    //   this.tipo.datos = 'complete';
-    //   this.tipo.pagar = 'edit';
-    // }
+    this.totalH = this.Cbancaria + this.importe;
+  }
+  disabledOp(index) {
+    if(index==0 || this.cuotas.listpago[index-1].checkedCuota) {
+      return false;
+    } else {
+      this.cuotas.listpago[index].checkedCuota = false;
+      return true;
+    }
   }
   tipocomp() {
     if(this.comprobante == 'f') {
@@ -295,7 +288,7 @@ export class ServiciosPage implements OnInit {
       if(this.comprobante == 'f') {
         this.auth.Pago = 
         {clidoc:this.document,clinom:this.nombre, tipdoc:'01',vserdoc:'0001',cip: this.auth.AuthToken.ncodcol,
-          cipnom:this.auth.AuthToken.CNOMB,
+          cipnom:this.auth.AuthToken.CNOMB,departamento:this.departamento, provincia: this.provincia,
           total:this.total,vTipoope:'02',cli:'E',
           vcodcer:'0001',Asunto:this.Asunto,Entidad:this.Entidad,Direccion:this.Direccion,Correo:this.Correo,
           listPago: [{fechaPago: rightNow.toISOString(), Monto: 20}]}
@@ -303,7 +296,7 @@ export class ServiciosPage implements OnInit {
       } else {
         this.auth.Pago = 
         {clidoc:this.document,clinom:this.nombre, tipdoc:'03',vserdoc:'0001',cip: this.auth.AuthToken.ncodcol,
-          cipnom:this.auth.AuthToken.CNOMB,
+          cipnom:this.auth.AuthToken.CNOMB,departamento:this.departamento, provincia: this.provincia,
           total:this.total,vTipoope:'02',cli:'C',
           vcodcer:'0001',Asunto:this.Asunto,Entidad:this.Entidad,Direccion:this.Direccion,Correo:this.Correo,
           listPago: [{fechaPago: rightNow.toISOString(), Monto: 20}]}

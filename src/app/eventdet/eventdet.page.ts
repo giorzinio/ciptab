@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../providers/api/api.service';
 
 @Component({
   selector: 'app-eventdet',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class EventdetPage implements OnInit {
   event : any;
-  constructor(private route: ActivatedRoute, private router: Router) { 
+  constructor(private route: ActivatedRoute, private router: Router, public api: ApiService) { 
     this.route.queryParams.subscribe(params => {
       if (params && params.event) {
         this.event = JSON.parse(params.event);

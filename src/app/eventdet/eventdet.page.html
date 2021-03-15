@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-card class="ion-no-padding ion-no-margin">
-    <img [src]="'data:image/jpg;base64,' + event.imgEvento">
+    <img [src]="api.api + '/uploads/img/' + event.imgEvento">
   </ion-card>
   <div class="title ion-padding">
     <strong>{{event.Titutlo}}</strong>

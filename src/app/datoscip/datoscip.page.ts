@@ -27,7 +27,7 @@ export class DatoscipPage implements OnInit {
     this.api.getDataWithParms('/api/Values',{ Opcion: 3,ncodcol: this.auth.AuthToken.ncodcol, codverif: this.auth.AuthToken.ncodcol,Procedure: "mobileProcedure" })
     .then(data => { 
      this.datos = JSON.parse(data.toString())[0];  
-     this.datos.nestcol =  this.datos.nestcol = 1 ? 'NO HABILITADO' : 'NO HABILITADO';
+     this.datos.nestcol =  this.datos.nestcol = 1 ? 'HABILITADO' : 'NO HABILITADO';
      console.log(this.datos);   
     });  
   }
